@@ -1,0 +1,63 @@
+### registration
+
+GRAPHQL {{base}} HTTP/1.1
+Accept: application/json
+
+mutation Users($userData: CreateUserInput!) {
+  registerUser(createUserInput: $userData) {
+    id
+    email
+    username
+  }
+}
+
+{
+  "userData": {
+    "email": "asd1243",
+    "password": "asd",
+    "username": "asd"
+  }
+}
+
+
+### sigin
+
+GRAPHQL {{base}} HTTP/1.1
+Accept: application/json
+
+mutation Users($userData: FindUserInput!) {
+  user_signin(userData: $userData) {
+    access_token
+  }
+}
+
+{
+  "userData": {
+    "email": "asd1243",
+    "password": "asd"
+  }
+}
+
+
+### sigin
+
+GRAPHQL {{base}} HTTP/1.1
+Accept: application/json
+
+query {
+  me {
+    id
+    email
+  }
+}
+
+
+### 
+
+POST http://localhost:8000/api/testAi HTTP/1.1
+Content-Type: application/json
+
+{
+  "email": "john@example.com",
+  "password": "password123"
+}

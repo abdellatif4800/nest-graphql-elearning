@@ -1,0 +1,62 @@
+### list tutorials
+
+GRAPHQL {{base}} HTTP/1.1
+Accept: application/json
+
+query Tutorial($Filters: FilterTutorialInput!) {
+  tutorialList(filters: $Filters) {
+    id
+    tutorialName
+    category
+    level
+    author {
+      id
+      username
+    }
+    units {
+      id
+      order
+      content
+      tutorialId
+    }
+  }
+}
+
+{
+  "Filters": {
+    "levels": [
+      "Beginner",
+      "Intermediate"
+    ],
+    "publish": true
+  }
+}
+
+
+### tutorial by id
+
+GRAPHQL {{base}} HTTP/1.1
+Accept: application/json
+
+query Tutorial($ID: ID!) {
+  tutorialById(id: $ID) {
+    id
+    tutorialName
+    unitsTitlesList
+    author {
+      id
+    }
+    units {
+      id
+      unitTitle
+
+      order
+      content
+      tutorialId
+    }
+  }
+}
+
+{
+  "ID": "17a9b794-8a90-451f-bfd1-9744cb020bb7"
+}

@@ -1,0 +1,104 @@
+name: next_nest_lms
+
+x-resource-limits: &limits
+  deploy:
+    resources:
+      limits:
+        memory: 512M
+      reservations:
+        memory: 128M
+
+services:
+  lms_postgres:
+    image: postgres
+    container_name: lms_postgres
+    network_mode: "host"
+    environment:
+      POSTGRES_USER: admin
+      POSTGRES_PASSWORD: password123
+      POSTGRES_DB: lms
+    ports:
+      - "5432:5432"
+    # networks:
+    #   - app-network
+
+    volumes:
+      - lms_postgres_data:/var/lib/postgresql/data
+    # restart: unless-stopped
+    <<: *limits
+
+  lms-minio-storage:
+    image: quay.io/minio/minio
+    # networks:
+    #   - app-network
+    network_mode: "host"
+
+    ports:
+      - "9000:9000"
+      - "9001:9001"
+    environment:
+      MINIO_ROOT_USER: user123
+      MINIO_ROOT_PASSWORD: pass123123
+    command: server /data --console-address ":9001"
+    volumes:
+      - lms-minio-volume:/data
+    # restart: unless-stopped
+    <<: *limits
+
+  # admin-api:
+  #   container_name: admin-api
+  #   build:
+  #     context: ./api # 👈 MUST be repo root
+  #     dockerfile: apps/admin-api/Dockerfile
+  #   ports:
+  #     - "8001:8001"
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - ./api/:/usr/src/app # 👈 hot reload
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - ecommerce_postgres
+  #   <<: *limits
+  #
+  # api:
+  #   container_name: api
+  #   build:
+  #     context: ./api # 👈 MUST be repo root
+  #     dockerfile: apps/api/Dockerfile
+  #   ports:
+  #     - "8000:8000"
+  #   networks:
+  #     - app-network
+  #   volumes:
+  #     - ./api/:/usr/src/app # 👈 hot reload
+  #     - /usr/src/app/node_modules
+  #   depends_on:
+  #     - ecommerce_postgres
+  #   <<: *limits
+
+  lms-nginx:
+    image: nginx:latest
+    network_mode: "host"
+    build:
+      context: ./nginx
+    container_name: lms-nginx
+    # networks:
+    #   - app-network
+    ports:
+      - "80:80"
+    volumes:
+      # - ./nginx/nginx.conf:/etc/nginx/nginx.conf
+      - ./nginx/conf.d/:/etc/nginx/conf.d/
+    # depends_on:
+    #   - api
+    #   - admin-api
+    <<: *limits
+
+# networks:
+#   app-network:
+#     driver: bridge
+
+volumes:
+  lms_postgres_data:
+  lms-minio-volume:

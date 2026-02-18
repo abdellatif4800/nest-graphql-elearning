@@ -1,0 +1,138 @@
+# ------------------------------------------------------
+# THIS FILE WAS AUTOMATICALLY GENERATED (DO NOT MODIFY)
+# ------------------------------------------------------
+
+type AuthResponse {
+  access_token: String!
+  user: UsersType
+}
+
+input CreateTutorialInput {
+  authorId: String!
+  category: String!
+  description: String
+  level: String
+  publish: Boolean!
+  thumbnail: String
+  tutorialName: String!
+  units: [CreateUnitInput]
+}
+
+input CreateUnitInput {
+  content: String!
+  id: String
+  order: Int!
+  publish: Boolean!
+  unitTitle: String!
+}
+
+input CreateUserInput {
+  email: String!
+  isBlocked: Boolean
+  password: String!
+  role: UserRole
+  username: String!
+}
+
+"""
+A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date-time format.
+"""
+scalar DateTime
+
+input FindUserInput {
+  email: String!
+  password: String!
+}
+
+type Mutation {
+  createTutorial(input: CreateTutorialInput!): TutorialType!
+  logout: Boolean!
+  registerUser(createUserInput: CreateUserInput!): UsersType!
+  removeTutorial(id: ID!): TutorialType!
+  removeUser(id: Int!): UsersType!
+  updateTutorial(updateTutorialInput: UpdateTutorialInput!): TutorialType!
+  updateUser(updateUserInput: UpdateUserInput!): UsersType!
+  user_signin(userData: FindUserInput!): AuthResponse!
+}
+
+type PayloadType {
+  email: String!
+  exp: Float
+  iat: Float
+  role: UserRole!
+  sub: String!
+  username: String!
+}
+
+type Query {
+  """Required by GraphQL spec (do not use)"""
+  _adminQueryRoot: Boolean!
+  me: PayloadType!
+  users: [UsersType!]!
+}
+
+type TutorialType {
+  author: UsersType!
+  authorId: String!
+  category: String!
+  createdAt: DateTime!
+  description: String
+  id: ID!
+  level: String
+  publish: Boolean!
+  thumbnail: String
+  tutorialName: String
+  units: [TutorialUnit]
+  unitsTitlesList: [String!]
+  updatedAt: DateTime!
+}
+
+type TutorialUnit {
+  content: String
+  createdAt: DateTime!
+  id: ID!
+  order: Int
+  publish: Boolean!
+  tutorialId: String!
+  unitTitle: String
+  updatedAt: DateTime!
+}
+
+input UpdateTutorialInput {
+  authorId: String
+  category: String
+  description: String
+  id: ID!
+  level: String
+  publish: Boolean
+  thumbnail: String
+  tutorialName: String
+  units: [CreateUnitInput!]
+}
+
+input UpdateUserInput {
+  email: String
+  id: Int!
+  isBlocked: Boolean
+  password: String
+  role: UserRole
+  username: String
+}
+
+"""User role enum"""
+enum UserRole {
+  ADMIN
+  MODERATOR
+  USER
+}
+
+type UsersType {
+  createdAt: DateTime!
+  email: String!
+  id: ID!
+  isBlocked: Boolean!
+  password: String!
+  role: UserRole!
+  updatedAt: DateTime!
+  username: String!
+}
