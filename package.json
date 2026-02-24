@@ -6,7 +6,9 @@
   "private": true,
   "license": "UNLICENSED",
   "scripts": {
-    "build": "nest build",
+    "build:admin-api": "nest build admin-api",
+    "build:user-api": "nest build user-api",
+    "build": "npm run build:admin-api && npm run build:user-api",
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
