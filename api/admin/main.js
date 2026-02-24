@@ -2381,23 +2381,27 @@ var __webpack_exports__ = {};
 var exports = __webpack_exports__;
 
 Object.defineProperty(exports, "__esModule", ({ value: true }));
+exports["default"] = handler;
 const admin_api_module_1 = __webpack_require__(1);
 const core_1 = __webpack_require__(25);
 const common_1 = __webpack_require__(2);
+let expressApp;
 async function bootstrap() {
-    const app = await core_1.NestFactory.create(admin_api_module_1.AdminApiModule, {
-        logger: new common_1.ConsoleLogger({
-            json: true,
-            colors: true,
-        }),
-    });
-    app.enableCors();
-    app.useGlobalPipes(new common_1.ValidationPipe({ whitelist: false, transform: true }));
-    const port = process.env.ADMIN_PORT;
-    await app.listen(port);
-    common_1.Logger.log(`🚀 Admin Api is running on: http://localhost:${port} `);
+    if (!expressApp) {
+        const app = await core_1.NestFactory.create(admin_api_module_1.AdminApiModule, {
+            logger: new common_1.ConsoleLogger({ json: true, colors: true }),
+        });
+        app.enableCors();
+        app.useGlobalPipes(new common_1.ValidationPipe({ whitelist: false, transform: true }));
+        await app.init();
+        expressApp = app.getHttpAdapter().getInstance();
+    }
+    return expressApp;
 }
-bootstrap();
+async function handler(req, res) {
+    const app = await bootstrap();
+    return app(req, res);
+}
 
 })();
 
