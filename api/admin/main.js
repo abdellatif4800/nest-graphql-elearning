@@ -2399,8 +2399,15 @@ async function bootstrap() {
     return expressApp;
 }
 async function handler(req, res) {
-    const app = await bootstrap();
-    return app(req, res);
+    try {
+        const app = await bootstrap();
+        return app(req, res);
+    }
+    catch (err) {
+        console.error('NestJS Serverless Error:', err);
+        res.statusCode = 500;
+        res.end('Internal Server Error');
+    }
 }
 
 })();
