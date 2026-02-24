@@ -1,0 +1,11 @@
+{
+  "version": 2,
+  "functions": {
+    "dist/apps/user-api/main.js": { "runtime": "@vercel/node" },
+    "dist/apps/admin-api/main.js": { "runtime": "@vercel/node" }
+  },
+  "rewrites": [
+    { "source": "/user/(.*)", "destination": "dist/apps/user-api/main.js" },
+    { "source": "/admin/(.*)", "destination": "dist/apps/admin-api/main.js" }
+  ]
+}

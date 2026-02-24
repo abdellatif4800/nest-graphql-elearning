@@ -1,5 +1,5 @@
-import { NestFactory } from '@nestjs/core';
 import { AdminApiModule } from './admin-api.module';
+import { NestFactory } from '@nestjs/core';
 import { ConsoleLogger, ValidationPipe, Logger } from '@nestjs/common';
 
 async function bootstrap() {
