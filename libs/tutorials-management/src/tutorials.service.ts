@@ -108,8 +108,7 @@ export class TutorialsService {
   }
 
   async update(id: string, updateTutorialInput: UpdateTutorialInput) {
-    const tutorial = await this.tutorialRepo.preload({
-      id,
+    const tutorial: any = await this.tutorialRepo.preload({
       ...updateTutorialInput,
     });
 

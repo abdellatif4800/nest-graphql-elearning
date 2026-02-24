@@ -1,5 +1,5 @@
 import { UserRole } from 'apiLibs/common';
-import { Tutorial } from 'apiLibs/tutorials-management';
+import { Roadmap, Tutorial } from 'apiLibs/tutorials-management';
 import {
   Column,
   CreateDateColumn,
@@ -35,6 +35,9 @@ export class Users {
 
   @OneToMany(() => Tutorial, (tutorial) => tutorial.author)
   tutorials: Tutorial[];
+
+  @OneToMany(() => Roadmap, (roadmap) => roadmap.author)
+  roadmaps: Roadmap[];
 
   /** Timestamps */
   @CreateDateColumn({ default: new Date() })

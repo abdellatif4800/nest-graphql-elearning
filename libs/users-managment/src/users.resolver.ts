@@ -14,7 +14,7 @@ import { log } from 'console';
 
 @Resolver(() => UsersType)
 export class UsersResolver {
-  constructor(private readonly usersService: UsersService) {}
+  constructor(private readonly usersService: UsersService) { }
 
   @Mutation(() => UsersType, { name: 'registerUser' })
   createUser(@Args('createUserInput') createUserInput: CreateUserInput) {
@@ -31,7 +31,7 @@ export class UsersResolver {
     @Args('userData') userData: FindUserInput,
     @Context() ctx: { res: Response },
   ) {
-    const result = await this.usersService.findUser(userData);
+    const result: any = await this.usersService.findUser(userData);
 
     ctx.res.cookie('access_token', result.access_token, {
       httpOnly: true,

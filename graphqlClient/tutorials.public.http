@@ -24,11 +24,7 @@ query Tutorial($Filters: FilterTutorialInput!) {
 
 {
   "Filters": {
-    "levels": [
-      "Beginner",
-      "Intermediate"
-    ],
-    "publish": true
+    "publish": false
   }
 }
 

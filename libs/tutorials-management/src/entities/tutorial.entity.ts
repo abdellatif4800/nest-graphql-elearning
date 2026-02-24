@@ -7,8 +7,10 @@ import {
   UpdateDateColumn,
   JoinColumn,
   ManyToOne,
+  ManyToMany,
 } from 'typeorm';
 import { Users } from 'apiLibs/users-managment';
+import { Roadmap } from './roadmap.entity';
 
 @Entity('tutorials')
 export class Tutorial {
@@ -33,6 +35,9 @@ export class Tutorial {
   @ManyToOne(() => Users, (user) => user.tutorials, { onDelete: 'CASCADE' })
   @JoinColumn({ name: 'authorId' })
   author: Users;
+
+  @ManyToMany(() => Roadmap, (roadmap) => roadmap.tutorials)
+  roadmaps: Roadmap[];
 
   @Column({ type: 'uuid' })
   authorId: string;
