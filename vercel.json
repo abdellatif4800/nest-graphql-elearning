@@ -1,11 +1,11 @@
 {
   "version": 2,
   "functions": {
-    "dist/apps/admin-api/main.js": { "runtime": "@vercel/node@2.0.0" },
-    "dist/apps/user-api/main.js": { "runtime": "@vercel/node@2.0.0" }
+    "apps/admin-api/main.ts": { "runtime": "@vercel/node@2.0.0" },
+    "apps/user-api/main.ts": { "runtime": "@vercel/node@2.0.0" }
   },
   "rewrites": [
-    { "source": "/admin/(.*)", "destination": "dist/apps/admin-api/main.js" },
-    { "source": "/user/(.*)", "destination": "dist/apps/user-api/main.js" }
+    { "source": "/admin/(.*)", "destination": "apps/admin-api/main.ts" },
+    { "source": "/user/(.*)", "destination": "apps/user-api/main.ts" }
   ]
 }
