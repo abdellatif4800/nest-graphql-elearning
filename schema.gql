@@ -7,6 +7,25 @@ type AuthResponse {
   user: UsersType
 }
 
+input CreateTutorialInput {
+  authorId: String!
+  category: String!
+  description: String
+  level: String
+  publish: Boolean!
+  thumbnail: String
+  tutorialName: String!
+  units: [CreateUnitInput]
+}
+
+input CreateUnitInput {
+  content: String!
+  id: String
+  order: Int!
+  publish: Boolean!
+  unitTitle: String!
+}
+
 input CreateUserInput {
   email: String!
   isBlocked: Boolean
@@ -20,26 +39,18 @@ A date-time string at UTC, such as 2019-12-03T09:54:33Z, compliant with the date
 """
 scalar DateTime
 
-input FilterTutorialInput {
-  authorId: String
-  categories: [String!]
-  createdAfter: DateTime
-  createdBefore: DateTime
-  id: String
-  levels: [String!]
-  publish: Boolean!
-  tutorialName: String
-}
-
 input FindUserInput {
   email: String!
   password: String!
 }
 
 type Mutation {
+  createTutorial(input: CreateTutorialInput!): TutorialType!
   logout: Boolean!
   registerUser(createUserInput: CreateUserInput!): UsersType!
+  removeTutorial(id: ID!): TutorialType!
   removeUser(id: Int!): UsersType!
+  updateTutorial(updateTutorialInput: UpdateTutorialInput!): TutorialType!
   updateUser(updateUserInput: UpdateUserInput!): UsersType!
   user_signin(userData: FindUserInput!): AuthResponse!
 }
@@ -54,9 +65,9 @@ type PayloadType {
 }
 
 type Query {
+  """Required by GraphQL spec (do not use)"""
+  _adminQueryRoot: Boolean!
   me: PayloadType!
-  tutorialById(id: ID!): TutorialType!
-  tutorialList(filters: FilterTutorialInput): [TutorialType!]!
   users: [UsersType!]!
 }
 
@@ -85,6 +96,18 @@ type TutorialUnit {
   tutorialId: String!
   unitTitle: String
   updatedAt: DateTime!
+}
+
+input UpdateTutorialInput {
+  authorId: String
+  category: String
+  description: String
+  id: ID!
+  level: String
+  publish: Boolean
+  thumbnail: String
+  tutorialName: String
+  units: [CreateUnitInput!]
 }
 
 input UpdateUserInput {

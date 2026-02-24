@@ -9,6 +9,10 @@
     "build:admin-api": "nest build admin-api",
     "build:user-api": "nest build user-api",
     "build": "npm run build:admin-api && npm run build:user-api",
+    "build:watch:admin-api": "tsc --project apps/admin-api/tsconfig.build.json --watch",
+    "build:watch:user-api": "tsc --project apps/user-api/tsconfig.build.json --watch",
+    "build:watch": "concurrently -n Admin,User -c magenta,blue \"npm run build:watch:admin-api\" \"npm run build:watch:user-api\"",
+
     "format": "prettier --write \"apps/**/*.ts\" \"libs/**/*.ts\"",
     "start": "nest start",
     "start:dev": "nest start --watch",
