@@ -5,7 +5,7 @@ import {
 } from '@nestjs/common';
 import { CreateUserInput } from './dto/create-user.input';
 import { UpdateUserInput } from './dto/update-user.input';
-import * as bcrypt from 'bcrypt';
+import * as bcrypt from 'bcryptjs';
 import { InjectRepository } from '@nestjs/typeorm';
 import { Users } from './entities/user.entity';
 import { UserAuthPayload, UserRole } from 'apiLibs/common';
@@ -20,7 +20,7 @@ export class UsersService {
     @InjectRepository(Users)
     private usersRepo: Repository<Users>,
     private jwtService: JwtService,
-  ) {}
+  ) { }
 
   async create(createUserInput: CreateUserInput) {
     const existingUser = await this.usersRepo.findOne({
