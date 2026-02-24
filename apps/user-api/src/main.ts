@@ -1,31 +1,45 @@
 import { NestFactory } from '@nestjs/core';
 import { UserApiModule } from './user-api.module';
-import { ConsoleLogger, Logger, ValidationPipe } from '@nestjs/common';
-import * as cookieParser from 'cookie-parser';
+import { ConsoleLogger, ValidationPipe } from '@nestjs/common';
+import { IncomingMessage, ServerResponse } from 'http';
+
+let expressApp: any;
 
 async function bootstrap() {
-  const app = await NestFactory.create(UserApiModule, {
-    logger: new ConsoleLogger({
-      json: true,
-      colors: true,
-    }),
-  });
+  if (!expressApp) {
+    // Create Nest app but do NOT listen on a port
+    const app = await NestFactory.create(UserApiModule, {
+      logger: new ConsoleLogger({ json: true, colors: true }),
+    });
 
-  app.use(cookieParser.default());
+    // Middlewares
+    const cookieParser = await import('cookie-parser');
+    app.use(cookieParser.default());
 
-  app.enableCors({
-    origin: ['http://localhost:3001', 'http://localhost:3000'],
-    credentials: true,
-  });
+    app.enableCors({
+      origin: ['http://localhost:3001', 'http://localhost:3000'],
+      credentials: true,
+    });
 
-  // ---------------
-  app.useGlobalPipes(new ValidationPipe({ whitelist: false, transform: true }));
+    app.useGlobalPipes(
+      new ValidationPipe({ whitelist: false, transform: true }),
+    );
 
-  // ---------------
-  const port = process.env.PORT!;
+    // Initialize but don't listen
+    await app.init();
 
-  await app.listen(port);
+    // Grab underlying Express instance
+    expressApp = app.getHttpAdapter().getInstance();
+  }
 
-  Logger.log(`🚀 Public/Users Api is running on: http://localhost:${port} `);
+  return expressApp;
 }
-bootstrap();
+
+// Vercel serverless handler
+export default async function handler(
+  req: IncomingMessage,
+  res: ServerResponse,
+) {
+  const app = await bootstrap();
+  return app(req, res);
+}
