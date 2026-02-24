@@ -764,7 +764,7 @@ exports.UsersService = UsersService = __decorate([
 /* 20 */
 /***/ ((module) => {
 
-module.exports = require("bcrypt");
+module.exports = require("bcryptjs");
 
 /***/ }),
 /* 21 */
