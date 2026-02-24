@@ -30,7 +30,7 @@ async function bootstrap() {
   return expressApp;
 }
 
-// Serverless handler for Vercel
+// Serverless handler for Verce
 export default async function handler(
   req: IncomingMessage,
   res: ServerResponse,
