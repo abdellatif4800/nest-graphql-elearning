@@ -35,8 +35,14 @@ export default async function handler(
   req: IncomingMessage,
   res: ServerResponse,
 ) {
-  const app = await bootstrap();
-  return app(req, res);
+  try {
+    const app = await bootstrap();
+    return app(req, res);
+  } catch (err) {
+    console.error('NestJS Serverless Error:', err);
+    res.statusCode = 500;
+    res.end('Internal Server Error');
+  }
 }
 
 // import { AdminApiModule } from './admin-api.module';
